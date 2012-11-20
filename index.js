@@ -1,7 +1,7 @@
 /**
  * next tick implementation.
  */
-nextTick = (function(){
+module.exports = (function(){
   // postMessage behaves badly on IE8
   if (window.ActiveXObject || !window.postMessage) {
     return simpleTick(fn)
