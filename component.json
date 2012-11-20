@@ -1,0 +1,13 @@
+{
+  "name": "next-tick",
+  "repo": "timoxley/next-tick",
+  "description": "next tick for browser.",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "scripts": [
+    "index.js"
+  ]
+}
