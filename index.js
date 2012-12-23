@@ -4,7 +4,7 @@
 module.exports = (function(){
   // postMessage behaves badly on IE8
   if (window.ActiveXObject || !window.postMessage) {
-    return simpleTick(fn)
+    return simpleTick
   }
 
   // based on setZeroTimeout by David Baron
@@ -26,11 +26,6 @@ module.exports = (function(){
 })();
 
 function simpleTick(fn) {
-  return function() {
-    var args = arguments
-    setTimeout(function() {
-      fn.apply(null, args)
-    }, 0)
-  }
+  setTimeout(fn, 0);
 }
 
