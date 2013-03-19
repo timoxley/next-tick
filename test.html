@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+	<script src="build/build.js"></script>
+	<script>
+		var setImmediate = require('next-tick')
+		setInterval(function(){
+			var pending = Math.round(Math.random() * 10)
+			var i = 0
+			console.log('%s pending', pending)
+			while (i++ < pending) {
+				setImmediate(function(){
+					--pending
+				})
+			}
+			setImmediate(function(){
+				if (pending !== 0) throw new Error('somethings up!')
+			})
+		}, 20)
+	</script>
+</head>
+</html>

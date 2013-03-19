@@ -1,31 +1,22 @@
-/**
- * next tick implementation.
- */
-module.exports = (function(){
-  // postMessage behaves badly on IE8
-  if (window.ActiveXObject || !window.postMessage) {
-    return simpleTick
-  }
 
-  // based on setZeroTimeout by David Baron
-  // - http://dbaron.org/log/20100309-faster-timeouts
-  var timeouts = []
-    , name = 'next-tick-zero-timeout'
+// postMessage behaves badly on IE8
+if (window.ActiveXObject || !window.postMessage) {
+  module.exports = setTimeout;
+} else {
+  var queue = [];
 
   window.addEventListener('message', function(e){
-    if (e.source == window && e.data == name) {
-      if (e.stopPropagation) e.stopPropagation();
-      if (timeouts.length) timeouts.shift()();
+    if (e.source == window && e.data == '_tic!') {
+      var q = queue;
+      var i = 0;
+      var len = q.length;
+      queue = [];
+      while (i < len) q[i++]();
     }
   }, true);
 
-  return function nextTick(fn){
-    timeouts.push(fn);
-    window.postMessage(name, '*');
+  module.exports = function(fn){
+    if (!queue.length) window.postMessage('_tic!', '*');
+    queue.push(fn);
   }
-})();
-
-function simpleTick(fn) {
-  setTimeout(fn, 0);
 }
-
