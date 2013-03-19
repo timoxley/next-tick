@@ -3,20 +3,16 @@
 if (window.ActiveXObject || !window.postMessage) {
   module.exports = setTimeout;
 } else {
-  var queue = [];
+  var q = [];
 
   window.addEventListener('message', function(e){
-    if (e.source == window && e.data == '_tic!') {
-      var q = queue;
-      var i = 0;
-      var len = q.length;
-      queue = [];
-      while (i < len) q[i++]();
-    }
+    var i = 0;
+    while (i < q.length) q[i++]();
+    q.length = 0;
   }, true);
 
   module.exports = function(fn){
-    if (!queue.length) window.postMessage('_tic!', '*');
-    queue.push(fn);
+    if (!q.length) window.postMessage('tic!', '*');
+    q.push(fn);
   }
 }
