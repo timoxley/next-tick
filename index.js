@@ -1,6 +1,8 @@
-
+if (typeof setImmediate === 'function') {
+  module.exports = setImmediate
+}
 // postMessage behaves badly on IE8
-if (window.ActiveXObject || !window.postMessage) {
+else if (window.ActiveXObject || !window.postMessage) {
   module.exports = setTimeout;
 } else {
   var q = [];
