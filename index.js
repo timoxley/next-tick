@@ -1,8 +1,12 @@
 if (typeof setImmediate === 'function') {
   module.exports = setImmediate
 }
-// postMessage behaves badly on IE8
-else if (window.ActiveXObject || !window.postMessage) {
+// handle node.js
+else if (typeof process !== 'undefined' && process && typeof process.nextTick === 'function') {
+  module.exports = function(fn){ return process.nextTick(fn) };
+}
+// fallback for other environments / postMessage behaves badly on IE8
+else if (typeof window === 'undefined' || window.ActiveXObject || !window.postMessage) {
   module.exports = setTimeout;
 } else {
   var q = [];
