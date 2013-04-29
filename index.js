@@ -11,14 +11,23 @@ else if (typeof window === 'undefined' || window.ActiveXObject || !window.postMe
 } else {
   var q = [];
 
-  window.addEventListener('message', function(e){
+  window.addEventListener('message', function f(e){
     var i = 0;
-    while (i < q.length) q[i++]();
+    while (i < q.length) {
+      try { q[i++](); }
+      catch (err) {
+        q = q.slice(i + 1);
+        post();
+        throw err;
+      }
+    }
     q.length = 0;
   }, true);
 
   module.exports = function(fn){
-    if (!q.length) window.postMessage('tic!', '*');
+    if (!q.length) post();
     q.push(fn);
   }
+
+  var post = function() { window.postMessage('tic!', '*'); }
 }
