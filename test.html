@@ -3,20 +3,30 @@
 <head>
 	<script src="build/build.js"></script>
 	<script>
-		var setImmediate = require('next-tick')
-		setInterval(function(){
+		var nectic = require('next-tick')
+
+		// an int between 1 and `max`
+		function random(max){
+			return (Math.random() * max | 0) + 1
+		}
+
+		(function run(){
 			var pending = Math.round(Math.random() * 10)
 			var i = 0
 			console.log('%s pending', pending)
 			while (i++ < pending) {
-				setImmediate(function(){
+				nectic(function(){
 					--pending
+					if (random(100) % 33 === 0) throw new Error('fail')
 				})
 			}
-			setImmediate(function(){
+			nectic(function(){
 				if (pending !== 0) throw new Error('somethings up!')
+				// console.log is async in browsers so we have to have a delay
+				// or we will never see anything (next-tick is only async sometimes)
+				setTimeout(run, 10)
 			})
-		}, 20)
+		})()
 	</script>
 </head>
 </html>
