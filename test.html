@@ -11,13 +11,13 @@
 		}
 
 		(function run(){
-			var pending = Math.round(Math.random() * 10)
+			var pending = random(10)
 			var i = 0
 			console.log('%s pending', pending)
 			while (i++ < pending) {
 				nectic(function(){
 					--pending
-					if (random(100) % 33 === 0) throw new Error('fail')
+					if (random(100) % 33 === 0) throw new Error('error should not kill app')
 				})
 			}
 			nectic(function(){

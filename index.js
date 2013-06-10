@@ -1,3 +1,5 @@
+"use strict"
+
 if (typeof setImmediate == 'function') {
   module.exports = function(f){ setImmediate(f) }
 }
